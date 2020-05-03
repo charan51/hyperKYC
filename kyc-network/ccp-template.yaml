@@ -1,0 +1,43 @@
+---
+name: kyc-network-${ORG}
+version: 1.0.0
+client:
+  organization: ${ORG}
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+organizations:
+  ${ORG}:
+    mspid: ${ORG}MSP
+    peers:
+    - peer0.${ORG}.kyc.com
+    - peer1.${ORG}.kyc.com
+    certificateAuthorities:
+    - ca.${ORG}.kyc.com
+peers:
+  peer0.${ORG}.kyc.com:
+    url: grpcs://localhost:${P0PORT}
+    tlsCACerts:
+      pem: |
+        ${PEERPEM}
+    grpcOptions:
+      ssl-target-name-override: peer0.${ORG}.kyc.com
+      hostnameOverride: peer0.${ORG}.kyc.com
+  peer1.${ORG}.kyc.com:
+    url: grpcs://localhost:${P1PORT}
+    tlsCACerts:
+      pem: |
+        ${PEERPEM}
+    grpcOptions:
+      ssl-target-name-override: peer1.${ORG}.kyc.com
+      hostnameOverride: peer1.${ORG}.kyc.com
+certificateAuthorities:
+  ca.${ORG}.kyc.com:
+    url: https://localhost:${CAPORT}
+    caName: ca-${ORG}
+    tlsCACerts:
+      pem: |
+        ${CAPEM}
+    httpOptions:
+      verify: false

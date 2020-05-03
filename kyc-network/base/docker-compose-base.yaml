@@ -1,0 +1,110 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+services:
+
+  orderer.kyc.com:
+    container_name: orderer.kyc.com
+    extends:
+      file: peer-base.yaml
+      service: orderer-base
+    volumes:
+        - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+        - ../crypto-config/ordererOrganizations/kyc.com/orderers/orderer.kyc.com/msp:/var/hyperledger/orderer/msp
+        - ../crypto-config/ordererOrganizations/kyc.com/orderers/orderer.kyc.com/tls/:/var/hyperledger/orderer/tls
+        - orderer.kyc.com:/var/hyperledger/production/orderer
+    ports:
+      - 7050:7050
+
+  peer0.citiBank.kyc.com:
+    container_name: peer0.citiBank.kyc.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.citiBank.kyc.com
+      - CORE_PEER_ADDRESS=peer0.citiBank.kyc.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.citiBank.kyc.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.citiBank.kyc.com:8051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.citiBank.kyc.com:7051
+      - CORE_PEER_LOCALMSPID=CitiBankMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/citiBank.kyc.com/peers/peer0.citiBank.kyc.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/citiBank.kyc.com/peers/peer0.citiBank.kyc.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.citiBank.kyc.com:/var/hyperledger/production
+    ports:
+      - 7051:7051
+
+  peer1.citiBank.kyc.com:
+    container_name: peer1.citiBank.kyc.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.citiBank.kyc.com
+      - CORE_PEER_ADDRESS=peer1.citiBank.kyc.com:8051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.citiBank.kyc.com:8052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.citiBank.kyc.com:8051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.citiBank.kyc.com:7051
+      - CORE_PEER_LOCALMSPID=CitiBankMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/citiBank.kyc.com/peers/peer1.citiBank.kyc.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/citiBank.kyc.com/peers/peer1.citiBank.kyc.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.citiBank.kyc.com:/var/hyperledger/production
+
+    ports:
+      - 8051:8051
+
+  peer0.sbi.kyc.com:
+    container_name: peer0.sbi.kyc.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer0.sbi.kyc.com
+      - CORE_PEER_ADDRESS=peer0.sbi.kyc.com:9051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.sbi.kyc.com:9052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.sbi.kyc.com:9051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.sbi.kyc.com:10051
+      - CORE_PEER_LOCALMSPID=SbiMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/sbi.kyc.com/peers/peer0.sbi.kyc.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/sbi.kyc.com/peers/peer0.sbi.kyc.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.sbi.kyc.com:/var/hyperledger/production
+    ports:
+      - 9051:9051
+
+  peer1.sbi.kyc.com:
+    container_name: peer1.sbi.kyc.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.sbi.kyc.com
+      - CORE_PEER_ADDRESS=peer1.sbi.kyc.com:10051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.sbi.kyc.com:10052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.sbi.kyc.com:10051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.sbi.kyc.com:9051
+      - CORE_PEER_LOCALMSPID=SbiMSP
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crypto-config/peerOrganizations/sbi.kyc.com/peers/peer1.sbi.kyc.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/sbi.kyc.com/peers/peer1.sbi.kyc.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.sbi.kyc.com:/var/hyperledger/production
+    ports:
+      - 10051:10051

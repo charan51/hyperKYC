@@ -1,0 +1,56 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+.header{
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+.header-body{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 100%;
+  min-width: 10%;
+  padding: 10px 20px;
+}
+.customH{
+  width: 100%;
+}
+.homeheader{
+  display: flex;
+align-items: center;
+justify-content: center;
+}
+.customH a{
+  margin: 0 20px;
+}
+.inputOptions{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  top: 50px;
+}
+.inputOptions button{
+  margin-top: 20px;
+}
+.selectBank, .MuiFormControl-root{
+  width: 250px;
+}
+.formRadio{
+  margin-top: 20px;
+}
+.leadeerData{
+  margin-top: 60px !important;
+}
