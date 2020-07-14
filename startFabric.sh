@@ -189,7 +189,7 @@ ${PEER0_ORG1} lifecycle chaincode commit \
 echo "Submitting initLedger transaction to smart contract on mychannel"
 # echo "The transaction is sent to all of the peers so that chaincode is built before receiving the following requests"
 ${PEER0_ORG1} chaincode uploadKYC \
-  -C mychannel \
+  -c mychannel \
   -n kycDetails \
   -c '{"function":"initLedger","Args":[]}' \
   --waitForEvent \
