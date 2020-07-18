@@ -36,14 +36,12 @@ async function main(orgName, userName, kycNumber,permissionOrg) {
 
         // Get the contract from the network.
         const contract = network.getContract('kycDetails');
-
-        const w = await contract.submitTransaction('changeKYCStatus', kycNumber.toString(),permissionOrg.toString());
-  
+        const w = await contract.submitTransaction('changeKYCStatus', kycNumber.toString(),orgName.toString());
+ 
         return w;
     
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
-        process.exit(1);
     }
 }
 
