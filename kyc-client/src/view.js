@@ -30,7 +30,7 @@ export default class ViewAll extends React.Component {
     submit = async () => {
         const { data: d = null } = await axios.get(`http://localhost:5001/query?org=${this.state.org}&userName=${this.state.userName}&id=${this.props.match.params.kycID}`);
         const a = [];
-
+        console.log(d);
         if (!d.d.status) {
             if(d.d === Object(d.d)){
                 
@@ -50,12 +50,12 @@ export default class ViewAll extends React.Component {
 
             this.setState({
                 data: [],
-                msg: d.d.msg
+                msg: 'You do not have permission to view KYC data'
             })
         }
     }
     getPermission = async () => {
-        const { data: d } = await axios.get(`http://localhost:5001/getPermission?org=${this.state.org}&userName=${this.state.userName}&kycNumber=${this.props.match.params.kycID}&permissionOrgName=${this.state.selectedOrg}`);
+        const { data: d } = await axios.get(`http://localhost:5001/getPermission?org=${this.state.org}&userName=${this.state.userName}&kycNumber=${this.props.match.params.kycID}&permissionOrgName=${localStorage.getItem('org') === 'citiBank' ? 'sbi' :'citiBank'}`);
         
     }
     handelChange = (e) => {
@@ -70,7 +70,11 @@ export default class ViewAll extends React.Component {
                 justify="center"
                 alignItems="center">
                 <Grid item xs={10} className="leadeerData">
-
+                {this.state.msg && 
+                <div><h2>{this.state.msg} </h2>
+                <div><Button style={{marginBottom:'20px'}} variant="contained" color="secondary" onClick={this.getPermission}> {this.props.match.params.kycID} Data Permission</Button></div>
+                            
+                        </div>}
                     <div style={{ maxWidth: '100%' }}>
                         <MaterialTable
                             columns={[
@@ -89,19 +93,7 @@ export default class ViewAll extends React.Component {
                             data={this.state.data}
                             title={`${this.state.org} Ledger Data`}
                         />
-                        {this.state.msg && <div>{this.state.msg} <button onClick={this.getPermission}>Get {this.props.match.params.kycID} permission</button>
-                            <div >  <FormControl ><InputLabel className="selectBank" id="demo-simple-select-label">Bank Name</InputLabel><Select
-                                id="selectBank"
-                                name="selectedOrg"
-                                value={this.state.selectedOrg}
-                                onChange={this.handelChange}
-                            >
-                                <MenuItem value={'citiBank'}>Citi Bank</MenuItem>
-                                <MenuItem value={'sbi'}>SBI Bank</MenuItem>
-                            </Select>
-                            </FormControl>
-                            </div>
-                        </div>}
+                        
                     </div>
                 </Grid>
             </Grid>

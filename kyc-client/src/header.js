@@ -29,7 +29,7 @@ const Home = (props) => {
                     </Link>
                             </div>
                         }
-                        {localStorage.getItem("user") !== "undefined" && localStorage.getItem("user") !== null ? <Link href="#" onClick={() => localStorage.clear()}>
+                        {localStorage.getItem("user") !== "undefined" && localStorage.getItem("user") !== null ? <Link href="/" onClick={() => localStorage.clear()}>
                             Logout
                         </Link> : <Link href="/login">
                                 Login

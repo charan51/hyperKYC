@@ -8,9 +8,9 @@ class Register extends React.Component {
         super(props);
         this.state = {
             userName: '',
-            org: 'select a organization',
+            org: localStorage.getItem('org'),
             res: '',
-            department: ''
+            department: 'sales'
         }
     }
     handelChange = (e) => {
@@ -20,7 +20,6 @@ class Register extends React.Component {
         });
     };
     submit = async () => {
-        console.log(this.state);
         const { data: d } = await axios.get(`http://localhost:5001/enrollUser?org=${this.state.org}&userName=${this.state.userName}&department=${this.state.department}&role=client`);
         this.setState({
             res: d.d
@@ -37,7 +36,9 @@ class Register extends React.Component {
                         <Select
                             id="selectBank"
                             name="org"
-                            value={'age'}
+                            value={this.state.org}
+                            defaultValue={'sbi'}
+                            disabled={true}
                             onChange={this.handelChange}
                         >
                             <MenuItem value={'citiBank'}>Citi Bank</MenuItem>
@@ -48,7 +49,7 @@ class Register extends React.Component {
                         <Select
                             id="department"
                             name="department"
-                            value={this.state.department}
+                            defaultValue={this.state.department}
                             onChange={this.handelChange}
                         >
                             <MenuItem value={'managment'}>Managment Department</MenuItem>

@@ -11,16 +11,36 @@ var cors = require('cors');
 const ChangepermissionOrg = require('../changePermission').permissionOrg;
 const QueryAll = require('../queryAll').QueryAll;
 const Identity = require('../getIdentity').Identity;
+const fs = require('fs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
-    res.header('Access-Control-Allow-Methods','GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
-})
-AdminEnroll('citiBank');
-AdminEnroll('sbi');
+});
+const citiWallet = fs.existsSync(require('path').resolve(__dirname, '..', 'citiBankwallet'));
+const sbiWallet = fs.existsSync(require('path').resolve(__dirname, '..', 'sbiwallet'));
+
+if (!citiWallet) {
+    AdminEnroll('citiBank');
+}
+if (!sbiWallet) {
+    AdminEnroll('sbi');
+}
+const something = (function () {
+    var executed = false;
+    return function () {
+        if (!executed) {
+            executed = true;
+
+
+        }
+    };
+})();
+
+something(); // "do something" happens
 // Register Admin
 app.get('/enrollAdmin', async (req, res) => {
     const { org } = req.query;
@@ -35,7 +55,7 @@ app.get('/enrollAdmin', async (req, res) => {
 app.get('/enrollUser', async (req, res) => {
     const { org, userName, department, role } = req.query;
     if (org && userName && department && role) {
-        const d = await UserEnroll(org,userName,department,role);
+        const d = await UserEnroll(org, userName, department, role);
         res.json({ d }).status(200);
     } else {
         res.status(400);
@@ -43,7 +63,7 @@ app.get('/enrollUser', async (req, res) => {
 });
 // Invoke to ledger
 app.post('/invoke', async (req, res) => {
-    const {org, userName, name, gender, citizenShip, Occupation, aadarNum, address, phone, email, state, city, pincode} = req.body;
+    const { org, userName, name, gender, citizenShip, Occupation, aadarNum, address, phone, email, state, city, pincode } = req.body;
     if (org && userName) {
         const d = await Invoke(org, userName, name, gender, citizenShip, Occupation, aadarNum, address, phone, email, state, city, pincode);
         res.json({ d }).status(200);
@@ -70,7 +90,7 @@ app.get('/queryall', async (req, res) => {
     } else {
         res.status(400);
     }
-  });
+});
 // Query single ledger Data
 app.get('/query', async (req, res) => {
     const { org, userName, id } = req.query;
@@ -91,9 +111,10 @@ app.get('/search', async (req, res) => {
     }
 });
 app.get('/getPermission', async (req, res) => {
-    const { org, userName, kycNumber,permissionOrgName } = req.query;
-    if (org && userName && kycNumber&& permissionOrgName) {
+    const { org, userName, kycNumber, permissionOrgName } = req.query;
+    if (org && userName && kycNumber && permissionOrgName) {
         const d = await ChangepermissionOrg(org, userName, kycNumber, permissionOrgName);
+        console.log(d);
         res.json({ d }).status(200);
     } else {
         res.status(400);

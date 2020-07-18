@@ -40,6 +40,7 @@ async function main(orgName, userName, id) {
         const result = await contract.evaluateTransaction('queryKyc', id.toString());
         const parsedResponse = JSON.parse(result);
         
+        console.log(parsedResponse);
         var a = '';
         if(Array.isArray(parsedResponse.permission)) {
          a = _.some(parsedResponse.permission, {orgName: orgName, permission: true});

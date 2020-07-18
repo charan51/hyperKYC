@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 
 import { Grid, Select,FormControl, InputLabel, MenuItem, Paper, TextField, Button } from '@material-ui/core';
 class Login extends React.Component {
@@ -21,17 +21,18 @@ class Login extends React.Component {
   };
   submit = async () => {
     const { data: d } = await axios.get(`http://localhost:5001/identity?org=${this.state.org}&userName=${this.state.userName}`);
-    
-    if (d.d !== 'An identity for the user asdf does not exist in the wallet') {
+    console.log(typeof d.d);
+    if (typeof d.d !== 'string') {
       localStorage.setItem('user', d.d.user);
       localStorage.setItem('org', d.d.org);
+      this.props.history.push("/");
       this.setState({
-        res:'An identity for the user asdf does not exist in the wallet',
-        success: false
+        success: true
       });
     } else {
       this.setState({
-        success: true
+        res:'An identity for the user asdf does not exist in the wallet',
+        success: false
       });
     }
   }
@@ -57,10 +58,10 @@ class Login extends React.Component {
           <div><Button onClick={this.submit} variant="contained">Login In</Button></div>
           <Paper>
             <div>
-            {this.state.res}
-            {
-              localStorage.getItem('user') !== "undefined" && localStorage.getItem("user") !== null && <Redirect to={'/'} />
-            }
+             {this.state.res}
+            {/* {
+              localStorage.getItem('user') !== "undefined" && localStorage.getItem("user") !== null && <Redirect exact path={'/'} />
+            } */}
             </div>
           </Paper>
         </Grid>

@@ -38,7 +38,7 @@ async function main(orgName, userName, kycNumber,permissionOrg) {
         const contract = network.getContract('kycDetails');
 
         const w = await contract.submitTransaction('changeKYCStatus', kycNumber.toString(),permissionOrg.toString());
-   
+  
         return w;
     
     } catch (error) {

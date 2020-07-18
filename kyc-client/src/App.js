@@ -30,13 +30,13 @@ function App() {
       <BrowserRouter>
         <Header />
         <Switch>
+          <Route path="/login" component={Login}></Route>
+          <Route path='/registerKYC' component={RegisterKYC}></Route>
+          <Route path="/viewAll" component={ViewAll}></Route>
+          <Route path="/register" component={Register}></Route>
+          <Route path="/searchKYC" component={SearchKYC}></Route>
+          <Route path="/query/:kycID" component={View}></Route>
           <Route exact path="/" component={Home}></Route>
-          <Route exact path="/login" component={Login}></Route>
-          <Route exact path='/registerKYC' component={RegisterKYC}></Route>
-          <Route exact path="/viewAll" component={ViewAll}></Route>
-          <Route exact path="/register" component={Register}></Route>
-          <Route exact path="/searchKYC" component={SearchKYC}></Route>
-          <Route exact path="/query/:kycID" component={View}></Route>
         </Switch>
       </BrowserRouter>
     </ThemeProvider>
