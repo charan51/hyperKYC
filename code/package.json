@@ -22,7 +22,7 @@
         "express": "^4.17.1",
         "fabric-ca-client": "beta",
         "fabric-network": "beta",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.21",
         "nodemon": "^2.0.2",
         "uuid": "^7.0.3"
     },
